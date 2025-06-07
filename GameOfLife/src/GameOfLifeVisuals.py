@@ -1,7 +1,4 @@
-from typing import SupportsIndex
-
 import pygame
-import pygame_gui
 from pygame import Rect
 from pygame_gui.core import UIElement
 
@@ -32,16 +29,47 @@ class GridLayout:
             self.is_grid = is_grid
 
 
+class GridField:
+
+    def __init__(self, screen, base: Rect, border_colour, fill_colour, x: int, y: int):
+        self.x = x
+        self.y = y
+        self.screen = screen
+        self.base = base
+        self.border_colour = border_colour
+        self.fill_colour = fill_colour
+
+    def draw(self):
+        pygame.draw.rect(self.screen, self.fill_colour, self.base)
+        pygame.draw.rect(self.screen, self.border_colour, self.base, 1)
+
+    def is_in_bounds(self, x: int, y: int):
+        return ((self.base.x < x < self.base.x + self.base.width)
+                and (self.base.y < y < self.base.y + self.base.height))
+
+    def set_fill_colour(self, colour: tuple):
+        self.fill_colour = colour
+
+    def __str__(self):
+        return ("Field[x=" + str(self.base.x)
+                + ", y=" + str(self.base.y)
+                + ", width=" + str(self.base.width)
+                + ", height=" + str(self.base.height)
+                + "]")
+
+
 class GridPanel:
 
-    def __init__(self, screen, base: Rect, rows: int = 1, columns: int = 1, colour = (255, 255, 255)):
+    def __init__(self, screen, base: Rect, rows: int = 1, columns: int = 1, border_colour = (255, 255, 255), fill_colour = (0, 0, 0)):
         self.screen = screen
         self.base = base
         self.rows = rows
         self.columns = columns
-        self.colour = colour
+        self.border_colour = border_colour
+        self.fill_colour = fill_colour
         self.fields = [[]]
         self.update()
+        self.is_enabled = True
 
     def set_rows(self, rows: int):
         self.rows = rows
@@ -52,7 +80,7 @@ class GridPanel:
         self.update()
 
     def draw(self):
-        pygame.draw.rect(self.screen, self.colour, self.base, 3)
+        pygame.draw.rect(self.screen, self.border_colour, self.base, 3)
         for r in self.fields:
             for f in r:
                 f.draw()
@@ -64,23 +92,26 @@ class GridPanel:
         field_y = self.base.height / self.rows
         x_coordinate = self.base.x
         y_coordinate = self.base.y
-        for i in self.fields:
-            print(i)
-        #x = 0
-        # while x < self.base.width:
-        #     y = 0
-        #     while y < self.base.height:
-        #         rect = pygame.Rect(x_coordinate + x, y_coordinate + y, field_x, field_y)
-        #         y += field_y
-        #     x += field_x
-        #
-        for x in range(self.rows):
-            for y in range(self.columns):
-                rect = GridField(self.screen, pygame.Rect(x_coordinate + x * field_x, y_coordinate + y * field_y, field_x, field_y), self.colour)
-                self.fields[x][y] = rect
+        for y in range(self.rows):
+            for x in range(self.columns):
+                rect = GridField(self.screen, pygame.Rect(x_coordinate + x * field_x,
+                                                          y_coordinate + y * field_y,
+                                                          field_x,
+                                                          field_y),
+                                 self.border_colour,
+                                 self.fill_colour,
+                                 y, x)
+                self.fields[y][x] = rect
 
-    def handle_click(self, x: int, y: int):
-        pass
+    def get_field_by_loc(self, x: int, y: int) -> GridField:
+        for l in self.fields:
+            for f in l:
+                if f.is_in_bounds(x, y):
+                    return f
+        return None
+
+    def get_field_by_index(self, x: int, y: int) -> GridField:
+        return self.fields[x][y]
 
     def scale(self, x: int, y: int):
         pass
@@ -88,13 +119,35 @@ class GridPanel:
     def move(self, x: int, y: int):
         pass
 
+    def enable(self):
+        self.is_enabled = True
 
-class GridField:
+    def disable(self):
+        self.is_enabled = False
 
-    def __init__(self, screen, base: Rect, colour):
+
+class CheckBox:
+
+    def __init__(self, screen, base: Rect, color: tuple, clicked: bool):
         self.screen = screen
         self.base = base
-        self.colour = colour
+        self.color = color
+        self.clicked = clicked
 
     def draw(self):
-        pygame.draw.rect(self.screen, self.colour, self.base, 1)
+        if self.clicked:
+            pygame.draw.rect(self.screen, (148, 148, 148), self.base)
+        pygame.draw.rect(self.screen, self.color, self.base, 2)
+
+    def check_click(self, x: int, y: int) -> bool:
+        if (self.base.x < x < self.base.x + self.base.width
+            and self.base.y < y < self.base.y + self.base.height):
+            if self.clicked:
+                self.clicked = False
+            else:
+                self.clicked = True
+            return True
+        return False
+
+    def is_clicked(self):
+        return self.clicked
