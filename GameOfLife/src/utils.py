@@ -1,5 +1,8 @@
 import functools
 
+from src.exceptions import InvalidArgumentException
+
+
 def change_reporter(func):
     def wrapper(*args, **kwargs):
         wrapper.changes = []

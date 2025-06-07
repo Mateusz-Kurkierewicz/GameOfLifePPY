@@ -1,5 +1,8 @@
-from GameOfLifeUtils import Board, MooreNeighborhoodCalculator, Options, args_validator
-import pygame
+from src.calculator import MooreNeighborhoodCalculator
+from src.board import Board
+from src.options import Options
+from src.utils import args_validator
+
 
 def board_test():
     board = Board(3, 5)
