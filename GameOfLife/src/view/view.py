@@ -36,6 +36,8 @@ class PygameView(BaseView):
         self.pause_btn = pause_btn
         self.alive_entry = alive_entry
         self.dead_entry = dead_entry
+        self.display_alive_colour = alive_colour
+        self.display_dead_colour = dead_colour
         self.state = "stopped"
         self.set_state("stopped")
 
@@ -47,16 +49,19 @@ class PygameView(BaseView):
                     f.set_fill_colour(self.dead_colour)
                 else:
                     f.set_fill_colour(self.alive_colour)
-        temp = self.alive_colour
-        self.alive_colour = self.dead_colour
-        self.dead_colour = temp
+        if inverted:
+            self.display_alive_colour = self.dead_colour
+            self.display_dead_colour = self.alive_colour
+        else:
+            self.display_alive_colour = self.alive_colour
+            self.display_dead_colour = self.dead_colour
 
     def set_alive(self, row: int, column: int, alive: bool):
         if self.state == "active":
             if alive:
-                self.display_grd.get_field_by_index(row, column).set_fill_colour(self.alive_colour)
+                self.display_grd.get_field_by_index(row, column).set_fill_colour(self.display_alive_colour)
             else:
-                self.display_grd.get_field_by_index(row, column).set_fill_colour(self.dead_colour)
+                self.display_grd.get_field_by_index(row, column).set_fill_colour(self.display_dead_colour)
         else:
             if alive:
                 self.setup_grd.get_field_by_index(row, column).set_fill_colour(self.alive_colour)
@@ -73,7 +78,7 @@ class PygameView(BaseView):
         for r in range(self.setup_grd.rows):
             for c in range(self.setup_grd.columns):
                 self.setup_grd.get_field_by_index(r, c).set_fill_colour(self.dead_colour)
-                self.display_grd.get_field_by_index(r, c).set_fill_colour(self.dead_colour)
+                self.display_grd.get_field_by_index(r, c).set_fill_colour(self.display_dead_colour)
 
     def set_stay_alive_counts(self, counts: str):
         self.alive_entry.set_text(counts)
