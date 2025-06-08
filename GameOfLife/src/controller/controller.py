@@ -2,9 +2,9 @@ from threading import Thread
 from time import sleep
 
 from src.calculator import GameCalculator
-from src.board import Board
-from src.options import Options
-from src.view import BaseView
+from src.model.board import Board
+from src.model.options import Options
+from src.view.view import BaseView
 
 
 class BaseController:

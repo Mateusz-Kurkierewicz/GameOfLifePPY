@@ -1,4 +1,5 @@
-from src.observer import Observable
+from src.observer.event import PropertyChangeEvent
+from src.observer.observer import Observable
 
 
 class Options(Observable):
@@ -15,19 +16,19 @@ class Options(Observable):
 
     def set_board_columns(self, board_columns: int):
         self.board_columns = board_columns
-        self.call_observers()
+        self.call_observers(PropertyChangeEvent())
 
     def set_board_rows(self, board_rows: int):
         self.board_rows = board_rows
-        self.call_observers()
+        self.call_observers(PropertyChangeEvent())
 
     def set_stay_alive_counts(self, stay_alive_counts: list):
         self.stay_alive_counts = stay_alive_counts
-        self.call_observers()
+        self.call_observers(PropertyChangeEvent())
 
     def set_revive_counts(self, revive_counts: list):
         self.revive_counts = revive_counts
-        self.call_observers()
+        self.call_observers(PropertyChangeEvent())
 
     def set_inverted(self, inverted: bool):
         self.inverted = inverted

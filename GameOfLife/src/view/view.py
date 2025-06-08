@@ -1,7 +1,7 @@
 from pygame_gui.elements import UIButton
 
-from src.utils import args_validator
-from src.visuals import GridPanel
+from src.utils.util_funcs import args_validator
+from src.utils.visuals import GridPanel
 
 
 class BaseView:

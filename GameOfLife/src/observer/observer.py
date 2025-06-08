@@ -1,6 +1,9 @@
+from src.observer.event import Event
+
+
 class Observer:
 
-    def on_state_change(self):
+    def on_event(self):
         pass
 
 
@@ -17,6 +20,6 @@ class Observable:
     def remove_observer(self, observer: Observer):
         self.observers.remove(observer)
 
-    def call_observers(self):
+    def call_observers(self, event: Event):
         for o in self.observers:
-            o.on_state_change()
+            o.on_event()

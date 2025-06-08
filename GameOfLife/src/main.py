@@ -1,12 +1,12 @@
 import pygame
 import pygame_gui
 
-from src.board import Board
+from src.model.board import Board
 from src.calculator import MooreNeighborhoodCalculator
-from src.controller import SimpleController
-from src.options import Options
-from src.view import PygameView
-from visuals import GridPanel, CheckBox
+from src.controller.controller import SimpleController
+from src.model.options import Options
+from src.view.view import PygameView
+from src.utils.visuals import GridPanel, CheckBox
 
 options = Options(20, 20, [2, 3], [3], False, 1)
 

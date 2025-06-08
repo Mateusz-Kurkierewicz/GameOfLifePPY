@@ -1,6 +1,6 @@
-from src.board import Board
-from src.options import Options
-from src.utils import change_reporter
+from src.model.board import Board
+from src.model.options import Options
+from src.utils.util_funcs import change_reporter
 
 
 class GameCalculator:

@@ -1,7 +1,7 @@
 from src.calculator import MooreNeighborhoodCalculator
-from src.board import Board
-from src.options import Options
-from src.utils import args_validator
+from src.model.board import Board
+from src.model.options import Options
+from src.utils.util_funcs import args_validator
 
 
 def board_test():
