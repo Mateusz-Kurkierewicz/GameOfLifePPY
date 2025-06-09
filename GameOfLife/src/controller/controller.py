@@ -4,6 +4,7 @@ from time import sleep
 from src.calculator import GameCalculator
 from src.model.board import Board
 from src.model.options import Options
+from src.utils.util_funcs import args_validator
 from src.view.view import BaseView
 
 
@@ -44,10 +45,11 @@ class SimpleController(BaseController):
         self.options.board_columns = columns
         self.start_board.update_size(columns, rows, True)
         self.current_board.update_size(columns, rows, False)
-        self.view.update_size(rows, columns)
+        self.view.update_display_size(rows, columns)
+        self.view.update_setup_size(rows, columns)
         for r in range(rows):
             for c in range(columns):
-                self.view.set_alive(r, c, self.start_board.is_alive(r, c))
+                self.view.set_setup_alive(r, c, self.start_board.is_alive(r, c))
 
     def set_stay_alive_counts(self, from_str: str):
         self.options.stay_alive_counts.clear()
@@ -71,40 +73,55 @@ class SimpleController(BaseController):
         if self.start_board.is_alive(row, column):
             self.start_board.set_alive(row, column, False)
             self.current_board.set_alive(row, column, False)
-            self.view.set_alive(row, column, False)
+            self.view.set_setup_alive(row, column, False)
         else:
             self.start_board.set_alive(row, column, True)
             self.current_board.set_alive(row, column, True)
-            self.view.set_alive(row, column, True)
+            self.view.set_setup_alive(row, column, True)
 
     def start_animation(self):
         self.enabled = True
-        self.view.set_state("active")
+        self.set_state("active")
         thread = Thread(target=self.animate)
         thread.start()
 
     def animate(self):
         for r in range(self.current_board.get_rows()):
             for c in range(self.current_board.get_columns()):
-                self.view.set_alive(c, r, self.current_board.is_alive(c, r))
+                self.view.set_display_alive(c, r, self.current_board.is_alive(c, r))
         self.current_board = self.calculator.calculate(self.current_board)
         while self.enabled and len(self.calculator.calculate.changes) > 0:
             for coordinates in self.calculator.calculate.changes:
                 x = coordinates[0]
                 y = coordinates[1]
-                self.view.set_alive(x, y, self.current_board.is_alive(x, y))
+                self.view.set_display_alive(x, y, self.current_board.is_alive(x, y))
             self.current_board = self.calculator.calculate(self.current_board)
             sleep(0.5)
         if len(self.calculator.calculate.changes) == 0:
             self.enabled = False
-            self.view.set_state('stopped')
+            self.set_state('stopped')
 
     def pause_animation(self):
         self.enabled = False
-        self.view.set_state("paused")
+        self.set_state("paused")
 
     def stop_animation(self):
         self.enabled = False
         self.current_board.clear()
-        self.view.clear_board()
-        self.view.set_state("stopped")
+        self.view.clear_display_board()
+        self.set_state("stopped")
+
+    @args_validator(state=lambda x: x in ['stopped', 'paused', 'active'])
+    def set_state(self, state: str):
+        if state == "stopped":
+            self.view.start_btn.enable()
+            self.view.stop_btn.disable()
+            self.view.pause_btn.disable()
+        elif state == "paused":
+            self.view.start_btn.enable()
+            self.view.stop_btn.enable()
+            self.view.pause_btn.disable()
+        else:
+            self.view.start_btn.disable()
+            self.view.stop_btn.enable()
+            self.view.pause_btn.enable()

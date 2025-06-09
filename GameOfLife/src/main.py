@@ -41,11 +41,11 @@ clock = pygame.time.Clock()
 manager = pygame_gui.UIManager(screen_resolution)
 
 start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect(start_button_properties),
-                                            text='Rozpocznij',
+                                            text='Start',
                                             manager=manager)
 
 stop_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect(stop_button_properties),
-                                            text='Zakończ',
+                                            text='Stop',
                                             manager=manager)
 
 pause_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect(pause_button_properties),
