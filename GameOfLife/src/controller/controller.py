@@ -10,21 +10,23 @@ from src.view.view import BaseView
 
 class BaseController:
 
-    def set_inverted(self, inverted: bool): raise NotImplementedError
+    def set_inverted(self, inverted: bool): raise NotImplementedError()
 
-    def set_board_size(self, columns: int, rows: int): raise NotImplementedError
+    def set_board_size(self, columns: int, rows: int): raise NotImplementedError()
 
-    def set_stay_alive_counts(self, from_str: str): raise NotImplementedError
+    def set_stay_alive_counts(self, from_str: str): raise NotImplementedError()
 
-    def set_revive_counts(self, from_str: str): raise NotImplementedError
+    def set_revive_counts(self, from_str: str): raise NotImplementedError()
 
-    def handle_field_click(self, row: int, column: int): raise NotImplementedError
+    def handle_field_click(self, row: int, column: int): raise NotImplementedError()
 
-    def start_animation(self): raise NotImplementedError
+    def start_animation(self): raise NotImplementedError()
 
-    def pause_animation(self): raise NotImplementedError
+    def pause_animation(self): raise NotImplementedError()
 
-    def stop_animation(self): raise NotImplementedError
+    def stop_animation(self): raise NotImplementedError()
+
+    def clear_board(self): raise NotImplementedError()
 
 
 class SimpleController(BaseController):
@@ -111,17 +113,26 @@ class SimpleController(BaseController):
         self.view.clear_display_board()
         self.set_state("stopped")
 
+    def clear_board(self):
+        self.start_board.clear()
+        self.current_board.clear()
+        self.view.clear_setup_board()
+        self.view.clear_display_board()
+
     @args_validator(state=lambda x: x in ['stopped', 'paused', 'active'])
     def set_state(self, state: str):
         if state == "stopped":
             self.view.start_btn.enable()
             self.view.stop_btn.disable()
             self.view.pause_btn.disable()
+            self.view.clear_btn.enable()
         elif state == "paused":
             self.view.start_btn.enable()
             self.view.stop_btn.enable()
             self.view.pause_btn.disable()
+            self.view.clear_btn.disable()
         else:
             self.view.start_btn.disable()
             self.view.stop_btn.enable()
             self.view.pause_btn.enable()
+            self.view.clear_btn.disable()

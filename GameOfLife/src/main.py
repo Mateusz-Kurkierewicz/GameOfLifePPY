@@ -27,6 +27,7 @@ dead_label_properties = (340, 475, 100, 20)
 start_button_properties = (50, 50, 100, 50)
 stop_button_properties = (175, 50, 100, 50)
 pause_button_properties = (300, 50, 100, 50)
+clear_button_properties = (425, 50, 100, 50)
 #tabele
 setup_rect_properties = (50, 150, 300, 300)
 display_rect_properties = (375, 150, 300, 300)
@@ -52,23 +53,34 @@ pause_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect(pause_butt
                                             text='Pauza',
                                             manager=manager)
 
+clear_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect(clear_button_properties),
+                                            text='Wyczyść',
+                                            manager=manager)
+
 alive_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(alive_label_properties),
                                              text='Żywe przy:')
+
 alive_entry = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect(alive_entry_properties))
+
 dead_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(dead_label_properties),
                                              text='Ożywa przy:')
+
 dead_entry = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect(dead_entry_properties))
 
 inverted_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(inverted_label_properties),
                                              text='Negatyw')
+
 inverted_box = CheckBox(screen, pygame.Rect(inverted_box_properties), border_color, False)
 
 setup_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(setup_label_properties),
                                           text="Wprowadź kształt początkowy:")
+
 setup_grid = GridPanel(screen, pygame.Rect(setup_rect_properties),
                        options.board_rows, options.board_columns, border_color, dead_color)
+
 display_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(display_label_properties),
                                           text="Wynik:")
+
 display_grid = GridPanel(screen, pygame.Rect(display_rect_properties),
                          options.board_rows, options.board_columns, border_color, dead_color)
 
@@ -76,7 +88,7 @@ display_grid = GridPanel(screen, pygame.Rect(display_rect_properties),
 #backend
 board = Board(options.board_columns, options.board_rows)
 calculator = MooreNeighborhoodCalculator(options)
-view = PygameView(alive_color, dead_color, setup_grid, display_grid, start_button, stop_button, pause_button, alive_entry, dead_entry)
+view = PygameView(alive_color, dead_color, setup_grid, display_grid, start_button, stop_button, pause_button, clear_button, alive_entry, dead_entry)
 controller = SimpleController(options, board, view, calculator)
 
 running = True
@@ -96,6 +108,8 @@ while running:
                 controller.stop_animation()
             elif event.ui_element == pause_button:
                 controller.pause_animation()
+            elif event.ui_element == clear_button:
+                controller.clear_board()
 
         if event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED:
             if event.ui_element == alive_entry:

@@ -5,8 +5,9 @@ from src.utils.visuals import GridPanel
 
 class BaseView:
 
-    def __init__(self, alive_colour, dead_colour, setup_grd: GridPanel, display_grd: GridPanel,
-                 start_btn: UIButton, stop_btn: UIButton, pause_btn: UIButton,
+    def __init__(self, alive_colour, dead_colour,
+                 setup_grd: GridPanel, display_grd: GridPanel,
+                 start_btn: UIButton, stop_btn: UIButton, pause_btn: UIButton, clear_btn: UIButton,
                  alive_entry, dead_entry):
         self.alive_colour = alive_colour
         self.dead_colour = dead_colour
@@ -15,6 +16,7 @@ class BaseView:
         self.start_btn = start_btn
         self.stop_btn = stop_btn
         self.pause_btn = pause_btn
+        self.clear_btn = clear_btn
         self.alive_entry = alive_entry
         self.dead_entry = dead_entry
         self.display_alive_colour = alive_colour
@@ -41,11 +43,13 @@ class BaseView:
 
 class PygameView(BaseView):
 
-    def __init__(self, alive_colour, dead_colour, setup_grd: GridPanel, display_grd: GridPanel, start_btn: UIButton,
-                 stop_btn: UIButton, pause_btn: UIButton, alive_entry, dead_entry):
+    def __init__(self, alive_colour, dead_colour,
+                 setup_grd: GridPanel, display_grd: GridPanel,
+                 start_btn: UIButton, stop_btn: UIButton, pause_btn: UIButton, clear_btn: UIButton,
+                 alive_entry, dead_entry):
         super().__init__(alive_colour, dead_colour,
                          setup_grd, display_grd,
-                         start_btn, stop_btn, pause_btn,
+                         start_btn, stop_btn, pause_btn, clear_btn,
                          alive_entry, dead_entry)
 
     def set_inverted(self, inverted: bool):
