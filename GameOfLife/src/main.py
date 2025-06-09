@@ -8,13 +8,13 @@ from src.model.options import Options
 from src.view.view import PygameView
 from src.utils.visuals import GridPanel, CheckBox
 
-options = Options(20, 20, [2, 3], [3], False, 1)
+options = Options(20, 20, [2, 3], [3], False, 0.5)
 
 #GUI
 border_color = (40, 141, 191)
 alive_color = (32, 189, 61)
 dead_color = (0, 0, 0)
-screen_resolution = (1000, 600)
+screen_resolution = (725, 600)
 pygame.init()
 
 #tekst
@@ -115,7 +115,7 @@ while running:
             if event.ui_element == alive_entry:
                 controller.set_stay_alive_counts(alive_entry.get_text())
             if event.ui_element == dead_entry:
-                controller.set_stay_alive_counts(dead_entry.get_text())
+                controller.set_revive_counts(dead_entry.get_text())
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             if inverted_box.check_click(event.pos[0], event.pos[1]):

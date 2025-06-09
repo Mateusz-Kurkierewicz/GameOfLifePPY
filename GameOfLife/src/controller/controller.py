@@ -36,8 +36,16 @@ class SimpleController(BaseController):
         self.start_board = start_board
         self.current_board = start_board.__copy__()
         self.view = view
+        sac = ""
+        for c in self.options.stay_alive_counts: sac += str(c)
+        rc = ""
+        for c in self.options.revive_counts: rc += str(c)
+        self.view.set_stay_alive_counts(sac)
+        self.view.set_revive_counts(rc)
         self.calculator = calculator
         self.enabled = False
+        self.state = None
+        self.set_state("initial")
 
     def set_inverted(self, inverted: bool):
         self.view.set_inverted(inverted)
@@ -82,6 +90,9 @@ class SimpleController(BaseController):
             self.view.set_setup_alive(row, column, True)
 
     def start_animation(self):
+        if self.state == "completed":
+            self.current_board = self.start_board.__copy__()
+            self.view.clear_display_board()
         self.enabled = True
         self.set_state("active")
         thread = Thread(target=self.animate)
@@ -98,10 +109,10 @@ class SimpleController(BaseController):
                 y = coordinates[1]
                 self.view.set_display_alive(x, y, self.current_board.is_alive(x, y))
             self.current_board = self.calculator.calculate(self.current_board)
-            sleep(0.5)
+            sleep(self.options.anim_speed)
         if len(self.calculator.calculate.changes) == 0:
             self.enabled = False
-            self.set_state('stopped')
+            self.set_state("completed")
 
     def pause_animation(self):
         self.enabled = False
@@ -109,19 +120,16 @@ class SimpleController(BaseController):
 
     def stop_animation(self):
         self.enabled = False
-        self.current_board.clear()
-        self.view.clear_display_board()
-        self.set_state("stopped")
+        self.set_state("completed")
 
     def clear_board(self):
         self.start_board.clear()
-        self.current_board.clear()
         self.view.clear_setup_board()
-        self.view.clear_display_board()
 
-    @args_validator(state=lambda x: x in ['stopped', 'paused', 'active'])
+    @args_validator(state=lambda x: x in ['initial', 'paused', 'active', 'completed'])
     def set_state(self, state: str):
-        if state == "stopped":
+        self.state = state
+        if state == "initial":
             self.view.start_btn.enable()
             self.view.stop_btn.disable()
             self.view.pause_btn.disable()
@@ -131,8 +139,13 @@ class SimpleController(BaseController):
             self.view.stop_btn.enable()
             self.view.pause_btn.disable()
             self.view.clear_btn.disable()
-        else:
+        elif state == "active":
             self.view.start_btn.disable()
             self.view.stop_btn.enable()
             self.view.pause_btn.enable()
             self.view.clear_btn.disable()
+        elif state == "completed":
+            self.view.start_btn.enable()
+            self.view.stop_btn.disable()
+            self.view.pause_btn.disable()
+            self.view.clear_btn.enable()
