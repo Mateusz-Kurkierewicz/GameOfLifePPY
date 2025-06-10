@@ -1,3 +1,6 @@
+from typing import Final
+
+
 class EventType:
 
     def __init__(self, name: str):
@@ -15,9 +18,9 @@ class Event:
 
 class EventTypes:
 
-    PROPERTY_CHANGE_EVENT = EventType("property_change")
-    BOARD_UPDATE_EVENT = EventType("board_update")
-    GAME_COMPLETE_EVENT = EventType("game_complete")
+    PROPERTY_CHANGE_EVENT: Final[EventType] = EventType("property_change")
+    BOARD_UPDATE_EVENT: Final[EventType] = EventType("board_update")
+    GAME_COMPLETE_EVENT: Final[EventType] = EventType("game_complete")
 
 
 class PropertyChangeEvent(Event):

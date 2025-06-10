@@ -1,6 +1,7 @@
 from src.calculator import MooreNeighborhoodCalculator
 from src.model.board import Board
 from src.model.options import Options
+from src.observer.event import EventTypes, EventType
 from src.utils.util_funcs import args_validator
 
 
@@ -48,7 +49,15 @@ def validator_test():
     test_func("active")
     test_func("whatever")
 
+def event_types_test():
+    e = EventTypes.GAME_COMPLETE_EVENT
+    print(e)
+    EventTypes.GAME_COMPLETE_EVENT = EventType("new_type")
+    e = EventTypes.GAME_COMPLETE_EVENT
+    print(e)
+
 
 #board_test()
 #calculator_test()
-validator_test()
+#validator_test()
+event_types_test()
