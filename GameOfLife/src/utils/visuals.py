@@ -124,30 +124,3 @@ class GridPanel:
 
     def disable(self):
         self.is_enabled = False
-
-
-class CheckBox:
-
-    def __init__(self, screen, base: Rect, color: tuple, clicked: bool):
-        self.screen = screen
-        self.base = base
-        self.color = color
-        self.clicked = clicked
-
-    def draw(self):
-        if self.clicked:
-            pygame.draw.rect(self.screen, (148, 148, 148), self.base)
-        pygame.draw.rect(self.screen, self.color, self.base, 2)
-
-    def check_click(self, x: int, y: int) -> bool:
-        if (self.base.x < x < self.base.x + self.base.width
-            and self.base.y < y < self.base.y + self.base.height):
-            if self.clicked:
-                self.clicked = False
-            else:
-                self.clicked = True
-            return True
-        return False
-
-    def is_clicked(self):
-        return self.clicked

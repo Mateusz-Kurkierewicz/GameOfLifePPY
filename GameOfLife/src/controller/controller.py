@@ -139,13 +139,16 @@ class SimpleController(BaseController):
             self.view.stop_btn.enable()
             self.view.pause_btn.disable()
             self.view.clear_btn.disable()
+            self.view.setup_grd.enable()
         elif state == "active":
             self.view.start_btn.disable()
             self.view.stop_btn.enable()
             self.view.pause_btn.enable()
             self.view.clear_btn.disable()
+            self.view.setup_grd.disable()
         elif state == "completed":
             self.view.start_btn.enable()
             self.view.stop_btn.disable()
             self.view.pause_btn.disable()
             self.view.clear_btn.enable()
+            self.view.setup_grd.enable()
