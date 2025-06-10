@@ -10,23 +10,82 @@ from src.view.view import BaseView
 
 class BaseController:
 
-    def set_inverted(self, inverted: bool): raise NotImplementedError()
+    def set_inverted(self, inverted: bool):
+        """
+        Ustawia, czy wynik pokazywać w negatywie
 
-    def set_board_size(self, columns: int, rows: int): raise NotImplementedError()
+        Args:
+            inverted (bool): czy wynik pokazywać w negatywie
+        """
+        raise NotImplementedError()
 
-    def set_stay_alive_counts(self, from_str: str): raise NotImplementedError()
+    def set_board_size(self, columns: int, rows: int):
+        """
+        Aktualizuje wymiary planszy
 
-    def set_revive_counts(self, from_str: str): raise NotImplementedError()
+        Args:
+            columns (int): Nowa ilość kolumn
+            rows (int):  Nowa ilość wierszy
+        """
+        raise NotImplementedError()
 
-    def handle_field_click(self, row: int, column: int): raise NotImplementedError()
+    def set_stay_alive_counts(self, from_str: str):
+        """
+        Waliduje i aktualizuje przy jakich ilościach żywych "sąsiadów" komórka pozostaje żywa
 
-    def start_animation(self): raise NotImplementedError()
+        Args:
+            from_str (str): Napis reprezentujący ilości (każdy znak to osobna ilość
+        """
+        raise NotImplementedError()
 
-    def pause_animation(self): raise NotImplementedError()
+    def set_revive_counts(self, from_str: str):
+        """
+        Waliduje i aktualizuje przy jakich ilościach żywych "sąsiadów" martwa komórka ożywa
 
-    def stop_animation(self): raise NotImplementedError()
+        Args:
+            from_str (str): Napis reprezentujący ilości (każdy znak to osobna ilość
+        """
+        raise NotImplementedError()
 
-    def clear_board(self): raise NotImplementedError()
+    def handle_field_click(self, row: int, column: int):
+        """
+        Obsługuje zdarzenie kliknięcia na komórkę planszy
+
+        Args:
+            row (int):  Wiersz, w którym znajduje się kliknięta komórka
+            column (int): Kolumna, w której znajduje się kliknięta komórka
+        """
+        raise NotImplementedError()
+
+    def start_animation(self):
+        """
+        Zaczyna wyświetlać animację
+        """
+        raise NotImplementedError()
+
+    def pause_animation(self):
+        """
+        Przerywa animację
+        """
+        raise NotImplementedError()
+
+    def stop_animation(self):
+        """
+        Kończy animację
+        """
+        raise NotImplementedError()
+
+    def clear_board(self):
+        """
+        Czyści planszę do ustawiania stanu początkowego
+        """
+        raise NotImplementedError()
+
+    def set_animation_speed(self, speed: int):
+        """
+        Ustawia prędkość animacji
+        """
+        raise NotImplementedError()
 
 
 class SimpleController(BaseController):
@@ -125,6 +184,9 @@ class SimpleController(BaseController):
     def clear_board(self):
         self.start_board.clear()
         self.view.clear_setup_board()
+
+    def set_animation_speed(self, speed: int):
+        self.options.anim_speed = speed
 
     @args_validator(state=lambda x: x in ['initial', 'paused', 'active', 'completed'])
     def set_state(self, state: str):

@@ -40,6 +40,8 @@ class BaseView:
 
     def set_revive_counts(self, counts: str): raise NotImplementedError()
 
+    def set_speed_display(self, speed: int): raise NotImplementedError
+
 
 class PygameView(BaseView):
 

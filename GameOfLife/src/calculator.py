@@ -5,11 +5,30 @@ from src.utils.util_funcs import change_reporter
 
 class GameCalculator:
 
+    """
+    Reprezentuje logikę aktualizacji planszy
+    """
+
     @change_reporter
-    def calculate(self, board: Board) -> Board: raise NotImplementedError
+    def calculate(self, board: Board) -> Board:
+        """
+        Metoda ta definiuje w jaki sposób plansza powinna być zaktualizowama,
+        czyli na jakiej zasadzie komórki na planszy powinny zmienić swój stan.
+        Metoda jest udekorowana @change_reporter, zapisując w nim koordynaty
+        komórek, których stan uległ zmianie.
+        Args:
+            board (Board): Plansza z grą
+        Returns:
+            Board: Zaktualizowana plansza po 1 iteracji
+        """
+        raise NotImplementedError
 
 
 class MooreNeighborhoodCalculator(GameCalculator):
+
+    """
+    Implementuje GameCalculator bazując na sąsiedztwie Moore'a
+    """
 
     def __init__(self, options: Options):
         self.options = options

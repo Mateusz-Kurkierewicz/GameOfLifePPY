@@ -20,7 +20,7 @@ setup_label_properties = (50, 125, 210, 20)
 display_label_properties = (375, 125, 60, 20)
 inverted_label_properties = (50, 475, 65, 20)
 alive_label_properties = (160, 475, 100, 20)
-dead_label_properties = (340, 475, 100, 20)
+dead_label_properties = (330, 475, 100, 20)
 #przyciski
 start_button_properties = (50, 50, 100, 50)
 stop_button_properties = (175, 50, 100, 50)
@@ -32,7 +32,7 @@ display_rect_properties = (375, 150, 300, 300)
 #ustawienia
 inverted_box_properties = (120, 475, 25, 25)
 alive_entry_properties = (260, 475, 50, 30)
-dead_entry_properties = (440, 475, 50, 30)
+dead_entry_properties = (430, 475, 50, 30)
 velocity_status_bar_properties = (50, 520, 200, 30)
 
 pygame.init()
@@ -86,8 +86,8 @@ display_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(display_la
 display_grid = GridPanel(screen, pygame.Rect(display_rect_properties),
                          options.board_rows, options.board_columns, border_color, dead_color)
 
-velocity_status_bar = pygame_gui.elements.UIScreenSpaceHealthBar(relative_rect=velocity_status_bar_properties,
-                                                      manager=manager)
+# velocity_status_bar = pygame_gui.elements.UIScreenSpaceHealthBar(relative_rect=velocity_status_bar_properties,
+#                                                       manager=manager)
 
 
 #backend

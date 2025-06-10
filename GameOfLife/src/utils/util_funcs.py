@@ -4,16 +4,23 @@ from src.exceptions import InvalidArgumentException
 
 
 def change_reporter(func):
+    """Rejestrator zmian
+    Dekoruje funkcję, która może zapisywać jakieś zmiany, które
+    zaszły w wyniku jej wykonania.
+    Args:
+        func: Funkcja, która może zapisywać jakieś zmiany
+    """
     def wrapper(*args, **kwargs):
         wrapper.changes = []
         return func(*args, **kwargs)
     return wrapper
 
-def xor(bool_1: bool, bool_2: bool) -> bool:
-    if (not bool_1 and bool_2) or (bool_1 and not bool_2): return True
-    return False
-
 def args_validator(**validators):
+    """Walidator argumentów
+    Weryfikuje, czy podane argumenty spełniają przekazane wymogi
+    Args:
+        validators: Funkcje, które weryfikują argumenty
+    """
     def decorator(func):
         arg_names = func.__code__.co_varnames[:func.__code__.co_argcount]
         @functools.wraps(func)
